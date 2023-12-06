@@ -7,3 +7,7 @@ pub fn read_file_to_vec(file_path: &str) -> Vec<String> {
 
     lines
 }
+
+pub fn read_file_to_string(file_path: &str) -> String {
+    fs::read_to_string(file_path).expect("error reading file")
+}

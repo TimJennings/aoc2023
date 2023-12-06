@@ -3,14 +3,11 @@ mod day1;
 mod day2;
 mod day3;
 mod day4;
-use std::{
-    env,
-    time::{self, Instant},
-};
+mod day5;
+use std::{env, time::Instant};
 fn main() {
-    let day = "4";
     let args: Vec<String> = env::args().collect();
-    let day = if args.len() >= 2 { &args[1] } else { day };
+    let day = if args.len() >= 2 { &args[1] } else { "5" };
 
     println!("Running day {day}");
 
@@ -31,6 +28,15 @@ fn main() {
             //day4::puz1();
             let now = Instant::now();
             day4::puz2();
+            let elapsed_time = now.elapsed();
+            println!(
+                "Running slow_function() took {} milliseconds.",
+                elapsed_time.as_millis()
+            );
+        }
+        "5" => {
+            let now = Instant::now();
+            day5::puz2();
             let elapsed_time = now.elapsed();
             println!(
                 "Running slow_function() took {} milliseconds.",
