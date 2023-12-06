@@ -20,6 +20,40 @@ pub fn puz1() {
     println!("multiply race win options: {answer}");
 }
 
+pub fn puz2() {
+    let input = read_file_to_string("input/day6-input");
+    let answer = calc_ans2(&input);
+    println!("multiply race win options: {answer}");
+}
+
+fn calc_ans2(input: &str) -> u64 {
+    let input = input.replace(" ", "");
+    let (input, time) = parse_time2(&input).unwrap();
+    let (input, distance) = parse_distance2(&input).unwrap();
+
+    println!("{time:?}");
+    println!("{distance:?}");
+
+    let duration = time.parse().unwrap();
+    let length_to_beat: i64 = distance.parse().unwrap();
+
+    let mut hold_time: i64 = 1;
+
+    let mut number_of_options = 0;
+    while hold_time < duration {
+        // for this hold time calculate distance travelled
+        let distance = (duration - hold_time) * hold_time;
+
+        if distance > length_to_beat {
+            number_of_options += 1;
+        }
+        hold_time += 1;
+    }
+
+    let answer = number_of_options;
+    answer
+}
+
 fn calc_ans1(input: &str) -> u32 {
     let (input, times) = parse_time(input).unwrap();
     let (input, distance) = parse_distance(input).unwrap();
@@ -65,6 +99,18 @@ fn calc_ans1(input: &str) -> u32 {
     answer
 }
 
+fn parse_time2(input: &str) -> IResult<&str, &str> {
+    let time_parser = pair(tag("Time:"), digit1);
+
+    map(time_parser, |(_, times)| times)(input)
+}
+
+fn parse_distance2(input: &str) -> IResult<&str, &str> {
+    let time_parser = pair(tag("\nDistance:"), digit1);
+
+    map(time_parser, |(_, times)| times)(input)
+}
+
 fn parse_time(input: &str) -> IResult<&str, Vec<&str>> {
     let time_parser = pair(
         pair(tag("Time:"), multispace0),
@@ -84,7 +130,7 @@ fn parse_distance(input: &str) -> IResult<&str, Vec<&str>> {
 }
 
 mod test {
-    use crate::day6::calc_ans1;
+    use crate::day6::{calc_ans1, calc_ans2};
 
     #[test]
     pub fn test() {
@@ -93,5 +139,14 @@ Distance:  9  40  200";
 
         let answer = calc_ans1(&input);
         assert_eq!(answer, 288);
+    }
+
+    #[test]
+    pub fn test2() {
+        let input = r"Time:      7  15   30
+Distance:  9  40  200";
+
+        let answer = calc_ans2(&input);
+        assert_eq!(answer, 71503);
     }
 }
