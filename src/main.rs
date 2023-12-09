@@ -5,6 +5,7 @@ mod day3;
 mod day4;
 mod day5;
 mod day6;
+mod day7;
 use std::{env, time::Instant};
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -47,6 +48,9 @@ fn main() {
         "6" => {
             day6::puz1();
             day6::puz2();
+        }
+        "7" => {
+            day7::puz1();
         }
         _ => {}
     }
